@@ -18,11 +18,14 @@ def generate_answer(question):
     return response.text
 
 def message_parser(message):
-    chat_id = message['message']['chat']['id']
     try:
-        text = message['message']['text']
+        chat_id = message['message']['chat']['id']
+        try:
+            text = message['message']['text']
+        except:
+            text = '__NONE__'
     except:
-        text = '__NONE__'
+        chat_id = -1
     print("Chat ID: ", chat_id)
     print("Message: ", text)
     return chat_id, text
@@ -46,13 +49,14 @@ def index():
     if request.method == 'POST':
         msg = request.get_json()
         chat_id, incoming_que = message_parser(msg)
-        if incoming_que.strip() == '/chatid':
-            send_message_telegram(chat_id, f'Your chat ID is: {chat_id}')
-        elif incoming_que == '__NONE__':
-            send_message_telegram(chat_id, 'Sorry, I can only interact with text right now :(')
-        else:
-            answer = generate_answer(incoming_que)
-            send_message_telegram(chat_id, answer)
+        if chat_id is not -1:
+            if incoming_que.strip() == '/chatid':
+                send_message_telegram(chat_id, f'Your chat ID is: {chat_id}')
+            elif incoming_que == '__NONE__':
+                send_message_telegram(chat_id, 'Sorry, I can only interact with text right now :(')
+            else:
+                answer = generate_answer(incoming_que)
+                send_message_telegram(chat_id, answer)
         return Response('ok', status=200)
     else:
         print(telegram_bot_token, GOOGLE_API_KEY)
