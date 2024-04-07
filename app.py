@@ -1,23 +1,28 @@
 import requests
 from flask import Flask, request, Response
 import google.generativeai as genai
+import os
 
 app = Flask(__name__)
 
-telegram_bot_token = '7109406430:AAFcr3QHimeRd5j4DJztzo5bka5YKGrv8Lo'
-bot_username = '@angel_medbot'
-GOOGLE_API_KEY = 'AIzaSyAsK8D9rop1CV9487Rnkxs1r1zVt3qmtyQ'
+telegram_bot_token = os.environ.get('BOT_TOKEN')
+bot_username = os.environ.get('BOT_USERNAME')
+GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
+NO_TEXT = False
 genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel('gemini-pro')
+chat = model.start_chat(history=[])
 
 def generate_answer(question):
-    chat = model.start_chat(history=[])
     response = chat.send_message(question)
     return response.text
 
 def message_parser(message):
     chat_id = message['message']['chat']['id']
-    text = message['message']['text']
+    try:
+        text = message['message']['text']
+    except:
+        text = 'NONE'
     print("Chat ID: ", chat_id)
     print("Message: ", text)
     return chat_id, text
@@ -38,19 +43,20 @@ def send_message_telegram(chat_id, text):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    print(request.method)
     if request.method == 'POST':
         msg = request.get_json()
-        print(msg)
         chat_id, incoming_que = message_parser(msg)
         if incoming_que.strip() == '/chatid':
             send_message_telegram(chat_id, f'Your chat ID is: {chat_id}')
+        elif NO_TEXT:
+            NO_TEXT = False
+            send_message_telegram(chat_id, 'Sorry, I can only interact with text right now :(')
         else:
             answer = generate_answer(incoming_que)
             send_message_telegram(chat_id, answer)
         return Response('ok', status=200)
     else:
-        return "<h1>Something went wrong</h1>"
+        return "<h1>GET Request Made</h1>"
 
 
 if __name__ == '__main__':
