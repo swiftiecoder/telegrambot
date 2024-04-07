@@ -8,7 +8,7 @@ app = Flask(__name__)
 telegram_bot_token = os.environ.get('BOT_TOKEN')
 bot_username = os.environ.get('BOT_USERNAME')
 GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
-NO_TEXT = False
+no_text = False
 genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel('gemini-pro')
 chat = model.start_chat(history=[])
@@ -48,8 +48,8 @@ def index():
         chat_id, incoming_que = message_parser(msg)
         if incoming_que.strip() == '/chatid':
             send_message_telegram(chat_id, f'Your chat ID is: {chat_id}')
-        elif NO_TEXT:
-            NO_TEXT = False
+        elif no_text:
+            no_text = False
             send_message_telegram(chat_id, 'Sorry, I can only interact with text right now :(')
         else:
             answer = generate_answer(incoming_que)
