@@ -48,3 +48,6 @@ def index():
         return Response('ok', status=200)
     else:
         return "<h1>Something went wrong</h1>"
+
+if __name__ == '__main__':
+    app.run()
