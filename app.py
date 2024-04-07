@@ -37,6 +37,7 @@ def send_message_telegram(chat_id, text):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    print('SOMETHINGS HAPPENING')
     if request.method == 'POST':
         msg = request.get_json()
         chat_id, incoming_que = message_parser(msg)
