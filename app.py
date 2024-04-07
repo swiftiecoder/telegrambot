@@ -22,7 +22,7 @@ def message_parser(message):
     try:
         text = message['message']['text']
     except:
-        text = 'NONE'
+        text = '__NONE__'
     print("Chat ID: ", chat_id)
     print("Message: ", text)
     return chat_id, text
@@ -48,14 +48,14 @@ def index():
         chat_id, incoming_que = message_parser(msg)
         if incoming_que.strip() == '/chatid':
             send_message_telegram(chat_id, f'Your chat ID is: {chat_id}')
-        elif no_text:
-            no_text = False
+        elif incoming_que == '__NONE__':
             send_message_telegram(chat_id, 'Sorry, I can only interact with text right now :(')
         else:
             answer = generate_answer(incoming_que)
             send_message_telegram(chat_id, answer)
         return Response('ok', status=200)
     else:
+        print(telegram_bot_token, GOOGLE_API_KEY)
         return "<h1>GET Request Made</h1>"
 
 
