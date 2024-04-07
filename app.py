@@ -26,6 +26,7 @@ def message_parser(message):
             text = '__NONE__'
     except:
         chat_id = -1
+        text = '__NONE__'
     print("Chat ID: ", chat_id)
     print("Message: ", text)
     return chat_id, text
