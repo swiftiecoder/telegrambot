@@ -14,8 +14,11 @@ model = genai.GenerativeModel('gemini-pro')
 chat = model.start_chat(history=[])
 
 def generate_answer(question):
-    response = chat.send_message(question)
-    return response.text
+    try:
+        response = chat.send_message(question)
+        return response.text
+    except:
+        return "Something went wrong generating the response"
 
 def message_parser(message):
     try:
