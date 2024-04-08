@@ -57,11 +57,11 @@ def index():
                 start_msg = "Hi there! I'm Guardian Angel, your AI companion for health and wellness. To get started, type '/instructions' for a helping hand"
                 send_message_telegram(chat_id, start_msg)
             elif incoming_que.strip() == '/instructions':
-                instructions_msg = """**Welcome to Guardian Angel!**\n
-                I'm your AI health companion, here to help you stay on top of your well-being.\n
-                To get started, sign up at [this url](https://stingray-app-rdd32.ondigitalocean.app/signup) and create an account.\n
-                You'll need your Chat ID to complete signup. Enter **/chatid** in this chat to retrieve your unique ID.\n
-                During signup on the website, enter the User ID programmed into your health band to link it with Guardian Angel.\n
+                instructions_msg = """**Welcome to Guardian Angel!**
+                I'm your AI health companion, here to help you stay on top of your well-being.
+                To get started, sign up at [this url](https://stingray-app-rdd32.ondigitalocean.app/signup) and create an account.
+                You'll need your Chat ID to complete signup. Enter **/chatid** in this chat to retrieve your unique ID.
+                During signup on the website, enter the User ID programmed into your health band to link it with Guardian Angel.
                 Happy health tracking!"""
                 send_message_telegram(chat_id, instructions_msg)
             elif incoming_que == '__NONE__':
