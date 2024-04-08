@@ -78,6 +78,8 @@ def index():
         if chat_id != -1:
             if incoming_que.strip() == '/chatid':
                 send_message_telegram(chat_id, f'Your chat ID is: {chat_id}')
+            elif incoming_que.strip() == '/chatlen':
+                send_message_telegram(chat_id, f'Your chat length is: {len(chats[chat_id}.history)}')
             elif incoming_que.strip() == '/start':
                 create_chat(chat_id)
                 start_msg = "Hi there! I'm Guardian Angel, your AI companion for health and wellness. To get started, type '/instructions' for a helping hand"
