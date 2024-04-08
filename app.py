@@ -12,11 +12,27 @@ GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
 no_text = False
 genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel('gemini-pro')
-chat = model.start_chat(history=[])
+chats = {}
 
-def generate_answer(question):
+def chat_exists(chat_id):
+    if chat_id in chats.keys():
+        return True
+    else:
+        return False
+        
+def create_chat(chat_id):
+    if chat_id == -1:
+        return
+    if chat_exists(chat_id):
+        return
+    else:
+        chats[chat_id] = model.start_chat(history=[])
+
+def generate_answer(chat_id, question):
     try:
-        response = chat.send_message(question, safety_settings={
+        if not chat_exists(chat_id):
+            create_chat(chat_id)
+        response = chats[chat_id].send_message(question, safety_settings={
         HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_NONE,
         HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_NONE,
         HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_NONE,
@@ -63,6 +79,7 @@ def index():
             if incoming_que.strip() == '/chatid':
                 send_message_telegram(chat_id, f'Your chat ID is: {chat_id}')
             elif incoming_que.strip() == '/start':
+                create_chat(chat_id)
                 start_msg = "Hi there! I'm Guardian Angel, your AI companion for health and wellness. To get started, type '/instructions' for a helping hand"
                 send_message_telegram(chat_id, start_msg)
             elif incoming_que.strip() == '/instructions':
@@ -71,7 +88,7 @@ def index():
             elif incoming_que == '__NONE__':
                 send_message_telegram(chat_id, 'Sorry, I can only interact with text right now :(')
             else:
-                answer = generate_answer(incoming_que)
+                answer = generate_answer(chat_id, incoming_que)
                 send_message_telegram(chat_id, answer)
         return Response('ok', status=200)
     else:
