@@ -14,6 +14,12 @@ genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel('gemini-pro')
 chats = {}
 
+def chat_length(chat_id):
+    if chat_id in chats.keys():
+        return len(chats[chat_id].history)//2
+    else:
+        return -1
+        
 def chat_exists(chat_id):
     if chat_id in chats.keys():
         return True
@@ -79,7 +85,7 @@ def index():
             if incoming_que.strip() == '/chatid':
                 send_message_telegram(chat_id, f'Your chat ID is: {chat_id}')
             elif incoming_que.strip() == '/chatlen':
-                send_message_telegram(chat_id, f'Your chat length is: {len(chats[chat_id].history)}')
+                send_message_telegram(chat_id, f'Your chat length is: {chat_length(chat_id)}')
             elif incoming_que.strip() == '/start':
                 create_chat(chat_id)
                 start_msg = "Hi there! I'm Guardian Angel, your AI companion for health and wellness. To get started, type '/instructions' for a helping hand"
