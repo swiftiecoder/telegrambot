@@ -4,3 +4,4 @@ pyngrok
 google-generativeai
 gunicorn
 wfastcgi
+pyrebase4
