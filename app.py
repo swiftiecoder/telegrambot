@@ -1,6 +1,7 @@
 import requests
 from flask import Flask, request, Response
 import google.generativeai as genai
+from google.generativeai.types import HarmCategory, HarmBlockThreshold
 import os
 
 app = Flask(__name__)
@@ -15,7 +16,12 @@ chat = model.start_chat(history=[])
 
 def generate_answer(question):
     try:
-        response = chat.send_message(question)
+        response = chat.send_message(question, safety_settings={
+        HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_NONE,
+        HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_NONE,
+        HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_NONE,
+        HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_NONE,
+        })
         return response.text
     except:
         return "Something went wrong generating the response"
