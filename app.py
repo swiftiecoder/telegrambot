@@ -44,6 +44,7 @@ def generate_answer(chat_id, question):
         HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_NONE,
         HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_NONE,
         })
+        print(response)
         return response.text
     except:
         return "Something went wrong generating the response"
