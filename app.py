@@ -87,6 +87,14 @@ def index():
             elif incoming_que.strip() == '/instructions':
                 instructions_msg = "**Welcome to Guardian Angel!**\n\nI'm your AI health companion, here to help you stay on top of your well-being.\n\nTo get started, sign up at [this url](https://stingray-app-rdd32.ondigitalocean.app/signup) and create an account. \n\nYou'll need your Chat ID to complete signup. Enter **/chatid** in this chat to retrieve your unique ID.\n\nDuring signup on the website, enter the User ID programmed into your health band to link it with Guardian Angel.\n\nHappy health tracking!"
                 send_message_telegram(chat_id, instructions_msg)
+            elif incoming_que.strip() == '/numusers':
+                send_message_telegram(chat_id, f'There are {len(chats)} users')
+            elif incoming_que.strip() == '/removeme':
+                del chats[chat_id]
+                send_message_telegram(chat_id, 'You have been removed')
+            elif incoming_que.strip() == '/removeall':
+                chats.clear()
+                send_message_telegram(chat_id, 'All users have been cleared')
             elif incoming_que == '__NONE__':
                 send_message_telegram(chat_id, 'Sorry, I can only interact with text right now :(')
             else:
