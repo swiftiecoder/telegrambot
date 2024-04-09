@@ -1,8 +1,9 @@
 import requests
-from flask import Flask, request, Response
+from flask import Flask, request, Response, jsonify
 import google.generativeai as genai
 from google.generativeai.types import HarmCategory, HarmBlockThreshold
 import os
+from prompt import create_prompt, update_response_list
 
 app = Flask(__name__)
 
@@ -73,9 +74,22 @@ def send_message_telegram(chat_id, text):
     response = requests.post(url, json=payload)
     return response
 
-# add route for esp to send data which is stored in firebase/local list idk
+@app.route('/api', methods=['POST'])
+def post_data():
+    try:
+        data = request.get_json()
+        print("Received JSON data:")
+        # print(data['user_id'])
+        # print(data['health_data'])
+        chat_id, uid, prompt = create_prompt(data['user_id'], data['health_data'])
 
-# add logic to get chat id for this data from the firebase db
+        answer = generate_answer(chat_id, prompt)
+        send_message_telegram(chat_id, answer)
+        update_response_list(uid, answer)
+    
+        return jsonify({'message': 'Data received successfully'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
