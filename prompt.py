@@ -4,7 +4,7 @@ import os
 import pyrebase
 
 config = {
-	"apiKey": os.environ.get('FIREBASE_API_KEY'),
+    "apiKey": os.environ.get('FIREBASE_API_KEY'),
     "authDomain": "sb-flask.firebaseapp.com",
     "databaseURL": "https://sb-flask-default-rtdb.firebaseio.com",
     "projectId": "sb-flask",
@@ -17,11 +17,13 @@ firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 db = firebase.database()
 
+
 def read_health_data(file_path):
     # Read health readings from a JSON file
     with open(file_path, 'r') as file:
         health_data = json.load(file)
     return health_data
+
 
 def create_prompt(user_id, health_data):
     # Construct the URL to access the user's data
@@ -37,38 +39,38 @@ def create_prompt(user_id, health_data):
         prompt += f"Heart Rate Readings: {health_data['heart_rates']}\n"
         prompt += f"Respiratory Index Readings: {health_data['respiratory_indices']}\n"
         prompt += f"Oxygen Level Readings: {health_data['oxygen_levels']}\n"
-        
+
         # Include the recent responses in the prompt
         responses = user_info.get('responses', [])
         prompt += f"Recent Responses: {responses}\n"
-	addtional = user_info['extra_info']
+        addtional = user_info['extra_info']
         prompt += f"Some additional information about the user:{addtional}\n"
         prompt += "You are a medical chatbot whose job is to receive patient health information and detect issues. Please diagnose any potential illnesses or anomolous activity based on the readings provided as if you are a medical professional. Provide meaningful insight into the user's health. Be conversational and concise"
-    
+
     else:
-            return f"No user info found for user ID: {user_id}"
-    
+        return f"No user info found for user ID: {user_id}"
+
     return user_info['chat_id'], uid, prompt
 
 
 def update_response_list(user_id, new_response):
     # Construct the URL to access the user's responses field
     url = f'https://sb-flask-default-rtdb.firebaseio.com/users/{user_id}/responses.json'
-    
+
     # Send a GET request to fetch the current response list
     get_response = requests.get(url)
-    
+
     if get_response.status_code == 200:
         response_list = get_response.json() or []  # Ensure we have a list
-        
+
         # Update the response list
         if len(response_list) >= 5:
             response_list.pop(0)
         response_list.append(new_response)
-        
+
         # Send a PUT request to update the response list
         put_response = requests.put(url, json.dumps(response_list))
-        
+
         if put_response.status_code in [200, 204]:
             return "Response list updated."
         else:
@@ -77,6 +79,7 @@ def update_response_list(user_id, new_response):
         return f"Failed to retrieve data: {get_response.status_code}"
 
 # Example usage:
+
 
 if __name__ == '__main__':
     # First, read health data from the JSON file
@@ -94,4 +97,3 @@ if __name__ == '__main__':
     update_response_list('tYX9kkq774XOFFRL0Yx3R32IJUD2', 'response3')
     update_response_list('tYX9kkq774XOFFRL0Yx3R32IJUD2', 'response4')
     update_response_list('tYX9kkq774XOFFRL0Yx3R32IJUD2', 'response5')
-
