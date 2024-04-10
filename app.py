@@ -10,7 +10,6 @@ app = Flask(__name__)
 telegram_bot_token = os.environ.get('BOT_TOKEN')
 bot_username = os.environ.get('BOT_USERNAME')
 GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
-no_text = False
 genai.configure(api_key=GOOGLE_API_KEY)
 # model = genai.GenerativeModel('gemini-pro')
 model = genai.GenerativeModel('gemini-1.5-pro-latest', system_instruction = 'You are a health assistant chatbot named Guardian Angel. You offer meaningful and accurate insight on health data in a concise and converstional manner.')
@@ -124,7 +123,7 @@ def index():
                 send_message_telegram(chat_id, answer)
         return Response('ok', status=200)
     else:
-        print(telegram_bot_token, GOOGLE_API_KEY)
+        # print(telegram_bot_token, GOOGLE_API_KEY)
         return "<h1>GET Request Made</h1>"
 
 
