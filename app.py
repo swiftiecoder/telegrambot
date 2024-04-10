@@ -84,6 +84,7 @@ def post_data():
         chat_id, uid, prompt = create_prompt(data['user_id'], data['health_data'])
 
         answer = generate_answer(chat_id, prompt)
+        print(chat_id, answer)
         send_message_telegram(chat_id, answer)
         update_response_list(uid, answer)
     
