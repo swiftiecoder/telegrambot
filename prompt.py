@@ -41,7 +41,7 @@ def create_prompt(user_id, health_data):
         # Include the recent responses in the prompt
         responses = user_info.get('responses', [])
         prompt += f"Recent Responses: {responses}\n"
-	addtional = {user_info['additional_info']}
+	addtional = user_info['extra_infp']
         prompt += f"Some additional information about the user:{addtional}\n"
         prompt += "You are a medical chatbot whose job is to receive patient health information and detect issues. Please diagnose any potential illnesses or anomolous activity based on the readings provided as if you are a medical professional. Provide meaningful insight into the user's health. Be conversational and concise"
     
