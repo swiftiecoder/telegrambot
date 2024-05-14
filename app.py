@@ -84,6 +84,10 @@ def post_data():
         # print(data['health_data'])
         chat_id, uid, prompt = create_prompt(data['user_id'], data['health_data'])
         # chat_id = int(chat_id)
+        # chat_id = eval(chat_id)
+        print(str.isdigit(chat_id))
+        print(eval(chat_id))
+        # print(int(chat_id))
         last_prompt = prompt
         print(last_prompt, prompt)
         answer = generate_answer(chat_id, prompt)
