@@ -14,6 +14,7 @@ genai.configure(api_key=GOOGLE_API_KEY)
 # model = genai.GenerativeModel('gemini-pro')
 model = genai.GenerativeModel('gemini-1.5-pro-latest', system_instruction = 'You are a health assistant chatbot named Guardian Angel. You offer meaningful and accurate insight on health data in a concise and converstional manner. You can reply in multiple languages if prompted')
 chats = {}
+last_prompt = ''
 
 def chat_length(chat_id):
     if chat_id in chats.keys():
@@ -82,7 +83,7 @@ def post_data():
         # print(data['user_id'])
         # print(data['health_data'])
         chat_id, uid, prompt = create_prompt(data['user_id'], data['health_data'])
-
+        last_prompt = prompt
         answer = generate_answer(chat_id, prompt)
         print(chat_id, answer)
         send_message_telegram(chat_id, answer)
@@ -116,7 +117,18 @@ def index():
                 send_message_telegram(chat_id, 'You have been removed')
             elif incoming_que.strip() == '/removeall':
                 chats.clear()
-                send_message_telegram(chat_id, 'All users have been cleared')
+            elif incoming_que.strip() == '/lastprompt':
+                send_message_telegram(chat_id, last_prompt)
+            elif incoming_que.strip() == '/chathistory':
+                try:
+                    send_message_telegram(chat_id, chats[chat_id].history)
+                except:
+                    send_message_telegram(chat_id, "Something went wrong")
+            elif incoming_que.strip() == '/chatdic':
+                try:
+                    send_message_telegram(chat_id, chats)
+                except:
+                    send_message_telegram(chat_id, "Something went wrong")
             elif incoming_que == '__NONE__':
                 send_message_telegram(chat_id, 'Sorry, I can only interact with text right now :(')
             else:
