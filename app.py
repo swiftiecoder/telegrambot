@@ -14,7 +14,7 @@ genai.configure(api_key=GOOGLE_API_KEY)
 # model = genai.GenerativeModel('gemini-pro')
 model = genai.GenerativeModel('gemini-1.5-pro-latest', system_instruction = 'You are a health assistant chatbot named Guardian Angel. You offer meaningful and accurate insight on health data in a concise and converstional manner. You can reply in multiple languages if prompted')
 chats = {}
-last_prompt = 'Empty'
+global last_prompt = 'Empty'
 
 def chat_length(chat_id):
     if chat_id in chats.keys():
@@ -83,7 +83,9 @@ def post_data():
         # print(data['user_id'])
         # print(data['health_data'])
         chat_id, uid, prompt = create_prompt(data['user_id'], data['health_data'])
+        chat_id = int(chat_id)
         last_prompt = prompt
+        print(last_prompt, prompt)
         answer = generate_answer(chat_id, prompt)
         print(chat_id, answer)
         send_message_telegram(chat_id, answer)
