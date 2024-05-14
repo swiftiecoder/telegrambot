@@ -45,7 +45,7 @@ def create_prompt(user_id, health_data):
         prompt += f"Recent Responses: {responses}\n"
         addtional = user_info['extra_info']
         prompt += f"Some additional information about the user:{addtional}\n"
-        prompt += "Please diagnose any potential illnesses or anomolous activity based on the readings provided as if you are a medical professional. Provide meaningful insight into the user's health. Be conversational and do not reply with more than 100 words"
+        prompt += "Please diagnose any potential illnesses or anomolous activity based on the readings provided as if you are a medical professional. Provide meaningful insight into the user's health. Use 2 medium-length sentences or less. You do not need to explain your reasoning."
 
     else:
         return f"No user info found for user ID: {user_id}"
