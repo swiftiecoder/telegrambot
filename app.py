@@ -12,9 +12,9 @@ bot_username = os.environ.get('BOT_USERNAME')
 GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
 genai.configure(api_key=GOOGLE_API_KEY)
 # model = genai.GenerativeModel('gemini-pro')
-model = genai.GenerativeModel('gemini-1.5-pro-latest', system_instruction = 'You are a health assistant chatbot named Guardian Angel. You offer meaningful and accurate insight on health data in a concise and converstional manner. You can reply in multiple languages if prompted')
+model = genai.GenerativeModel('gemini-1.5-pro-latest', system_instruction = 'You are a health assistant chatbot named Guardian Angel. You offer meaningful and accurate insight on health data in a concise and formal manner. You can reply in multiple languages if prompted')
 chats = {}
-global last_prompt = 'Empty'
+last_prompt = 'Empty'
 
 def chat_length(chat_id):
     if chat_id in chats.keys():
