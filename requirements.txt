@@ -1,8 +1,11 @@
 ﻿flask
 requests
 pyngrok
-google-generativeai
-gunicorn
+openai
 wfastcgi
 pyrebase4
 setuptools
+pandas
+numpy
+scipy
+json
