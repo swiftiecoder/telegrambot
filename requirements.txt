@@ -8,4 +8,3 @@ setuptools
 pandas
 numpy
 scipy
-json
