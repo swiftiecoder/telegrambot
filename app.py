@@ -7,10 +7,8 @@ from step_count import count_steps
 
 app = Flask(__name__)
 
-# telegram_bot_token = os.environ.get('BOT_TOKEN')
-telegram_bot_token = '7109406430:AAFcr3QHimeRd5j4DJztzo5bka5YKGrv8Lo'
-# OPEN_AI_KEY = os.environ.get('OPEN_AI_KEY')
-OPEN_AI_KEY = 'sk-proj-oaGMHEmYbAkZqeUQEVAxT3BlbkFJVsgmmw2iLtpF0A2CPvIr'
+telegram_bot_token = os.environ.get('BOT_TOKEN')
+OPEN_AI_KEY = os.environ.get('OPEN_AI_KEY')
 # model = genai.GenerativeModel('gemini-pro')
 system_instruction = 'You are a health assistant chatbot named Guardian Angel. You offer meaningful and accurate insight on health data in a concise and formal manner. You can reply in multiple languages if prompted'
 client = OpenAI(
